@@ -8,7 +8,7 @@ var magenta = '8F00FF';
 var timer;
 
 // connecting to Raspberry Pi  
-hooloovoo.setup(led_count, 120); // assign number of APA102 LEDs, assign SPI clock 
+hooloovoo.setup(led_count, 128); // assign number of APA102 LEDs, assign SPI clock 
 
 //hooloovoo.clear();
 
