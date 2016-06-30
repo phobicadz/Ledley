@@ -7,9 +7,11 @@ var green = '00FF00';var blue = '0000FF';var purple = '4B0082';
 var magenta = '8F00FF';
 var timer;
 
-// psuedo class a for a ball
+// psuedo class a for a ball -----------------------------------
 function Ball(name) {
-  this.name = name
+  this.name = name;
+  this.xbound = max_col-1;
+  this.ybound = max_row-1;
 }
 // and prototype
 Ball.prototype = {
@@ -35,13 +37,11 @@ Ball.prototype = {
     if(this.debug) console.log(this.x + " " + this.y);
   }
 };
-// end psuedo class
+// end psuedo class ---------------------------------------------
 
 // create ball object
 var ball = new Ball('Benny');
 ball.colour = blue;
-ball.xbound = max_col-1;
-ball.ybound = max_row-1;
 ball.debug = true;
 
 // connecting to Raspberry Pi  
