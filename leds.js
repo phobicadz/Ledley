@@ -64,6 +64,11 @@ function linex(x,color) {
   }
 }
 
+function BounceBall() {
+
+  
+}
+
 
 // Exit gracefully
 process.on('SIGINT', function () {
