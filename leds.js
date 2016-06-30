@@ -11,7 +11,7 @@ var timer;
 function Ball(name) {
   this.name = name
 }
-
+// and prototype
 Ball.prototype = {
   x:0, 
   y:0,
