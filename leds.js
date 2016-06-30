@@ -2,29 +2,33 @@ var hooloovoo = require('hooloovoo');
 var led_count = 121;
 var max_col = 12;
 var max_row = 10;
-var red = 'FF0000';
-var orange = 'FF7F00';
-var yellow = 'FFFF00';
-var green = '00FF00';
-var blue = '0000FF';
-var purple = '4B0082';
+var red = 'FF0000';var orange = 'FF7F00';var yellow = 'FFFF00';
+var green = '00FF00';var blue = '0000FF';var purple = '4B0082';
 var magenta = '8F00FF';
+var timer;
 
 // connecting to Raspberry Pi  
-hooloovoo.setup(led_count, 128); // assign number of APA102 LEDs, assign SPI clock 
+hooloovoo.setup(led_count, 120); // assign number of APA102 LEDs, assign SPI clock 
 
 //hooloovoo.clear();
 
 // set all colors to red  
 console.log(led_count);
 
-// after 2 seconds set first 6 LEDs to (red, green, blue, red, green, blue)  
+
+timer = setInterval(function() {
+
+  // main animation loop
+  BounceBall();
+
+},500);
+
+// after x Seconds kill the loop
 setTimeout(function () {
 
-  rainbow();
+  clearInterval(timer);
 
-  console.log("Finshed");
-}, 10);
+}, 3000);
 
 // converts co-ords to a pixel number
 function getPixelNumber(x,y) {
@@ -38,18 +42,12 @@ function getPixelNumber(x,y) {
 
 function rainbow() {
   hooloovoo.clear();
-  linex(0,red);
-  linex(1,orange);
-  linex(2,yellow);
-  linex(3,green);
-  linex(4,blue);
-  linex(5,purple);
-  linex(6,magenta);
-  linex(7,red);
-  linex(8,orange);
-  linex(9,yellow);
-  linex(10,green);
-  linex(11,blue);
+  linex(0,red);linex(1,orange);
+  linex(2,yellow);linex(3,green);
+  linex(4,blue);linex(5,purple);
+  linex(6,magenta);linex(7,red);
+  linex(8,orange);linex(9,yellow);
+  linex(10,green);linex(11,blue);
 }  
 
 function liney(y,color) {
@@ -66,7 +64,7 @@ function linex(x,color) {
 
 function BounceBall() {
 
-  
+
 }
 
 
