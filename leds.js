@@ -7,6 +7,26 @@ var green = '00FF00';var blue = '0000FF';var purple = '4B0082';
 var magenta = '8F00FF';
 var timer;
 
+
+// psuedo class a for a ball
+function Ball(name) {
+  this.name = name
+}
+
+Ball.prototype = {
+  x:0, 
+  y:0,
+  move: function() {
+
+    // individual move logic goes here
+    x++;
+    y++;
+  }
+};
+// end psuedo class
+
+var ball = new Ball('Benny');
+
 // connecting to Raspberry Pi  
 hooloovoo.setup(led_count, 128); // assign number of APA102 LEDs, assign SPI clock 
 
@@ -64,9 +84,9 @@ function linex(x,color) {
 
 function BounceBall() {
 
+  ball.move();
 
 }
-
 
 // Exit gracefully
 process.on('SIGINT', function () {
