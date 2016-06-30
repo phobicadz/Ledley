@@ -7,7 +7,6 @@ var green = '00FF00';var blue = '0000FF';var purple = '4B0082';
 var magenta = '8F00FF';
 var timer;
 
-
 // psuedo class a for a ball
 function Ball(name) {
   this.name = name
@@ -16,39 +15,49 @@ function Ball(name) {
 Ball.prototype = {
   x:0, 
   y:0,
-  move: function() {
-
+  xdirection:true,
+  ydirection:true,
+  xbound:0,
+  ybound:0,
+  debug:true,
+  colour:"",
+  bounce: function() {
     // individual move logic goes here
-    x++;
-    y++;
+    // checkbounds etc
+    if (this.x==this.xbound) this.xdirection=false;
+    if (this.x==0) this.xdirection=true;
+    if (this.y==this.ybound) this.ydirection=false;
+    if (this.y==0) this.ydirection=true;
+    if (this.xdirection == false) { this.x-- } else { this.x++ }
+    if (this.ydirection == false) { this.y-- } else { this.y++ }  
+
+    hooloovoo.set_pixel_hex(getPixelNumber(this.x,this.y),this.colour);
+    if(this.debug) console.log(this.x + " " + this.y);
   }
 };
 // end psuedo class
 
+// create ball object
 var ball = new Ball('Benny');
+ball.colour = blue;
+ball.xbound = max_col-1;
+ball.ybound = max_row-1;
+ball.debug = true;
 
 // connecting to Raspberry Pi  
 hooloovoo.setup(led_count, 128); // assign number of APA102 LEDs, assign SPI clock 
 
-//hooloovoo.clear();
-
-// set all colors to red  
-console.log(led_count);
-
-
 timer = setInterval(function() {
-
   // main animation loop
-  BounceBall();
+  hooloovoo.clear();
+  ball.bounce();
 
-},500);
+},50);
 
 // after x Seconds kill the loop
 setTimeout(function () {
-
   clearInterval(timer);
-
-}, 3000);
+}, 12000);
 
 // converts co-ords to a pixel number
 function getPixelNumber(x,y) {
@@ -80,12 +89,6 @@ function linex(x,color) {
   for(y=0;y<max_row;y++) {
     hooloovoo.set_pixel_hex(getPixelNumber(x,y),color);
   }
-}
-
-function BounceBall() {
-
-  ball.move();
-
 }
 
 // Exit gracefully
