@@ -1,6 +1,8 @@
-var ledclasses = require('./ledclasses');
-var hooloovoo = require('hooloovoo');
-var leds = new ledclasses(hooloovoo);
+///<reference path="classy.ts" />
+///<reference path="node.d.ts" />
+var hooloovoo = require("hooloovoo");
+var leds = require("./classy.js");
+
 var led_count = 121;
 var timer;
 
