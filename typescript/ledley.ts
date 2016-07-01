@@ -2,7 +2,6 @@
 ///<reference path="node.d.ts" />
 var hooloovoo = require("hooloovoo");
 var leds = require("./classy.js");
-
 var led_count = 121;
 var timer;
 
