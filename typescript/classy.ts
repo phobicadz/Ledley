@@ -1,3 +1,6 @@
+///<reference path="node.d.ts" />
+var hooloovoo = require("hooloovoo");
+
 class Ball {
     xbound: number;
     ybound: number;
@@ -25,7 +28,9 @@ class Ball {
         if (this.y==0) this.ydirection=true;
         if (this.xdirection == false) { this.x-- } else { this.x++ }
         if (this.ydirection == false) { this.y-- } else { this.y++ }  
-        if (this.debug) console.log(this.x + " " + this.y);
+        // console.log(this.x + " " + this.y);
+
+        hooloovoo.set_pixel_hex(ledHelper.getPixelNumber(this.x,this.y),this.colour);
     }  
 }
 
@@ -34,13 +39,14 @@ class Worm {
     balls: Ball[];
 
     constructor(x,y){
+        this.balls = [];
         this.balls.push(new Ball(ledHelper.red,0+x,0+y));
-        this.balls.push(new Ball(ledHelper,1+x,1+y));
-        this.balls.push(new Ball(ledHelper,2+x,2+y));
-        this.balls.push(new Ball(ledHelper,3+x,3+y));
-        this.balls.push(new Ball(ledHelper,4+x,4+y));
-        this.balls.push(new Ball(ledHelper,5+x,5+y));
-        this.balls.push(new Ball(ledHelper,6+x,6+y));
+        this.balls.push(new Ball(ledHelper.orange,1+x,1+y));
+        this.balls.push(new Ball(ledHelper.yellow,2+x,2+y));
+        this.balls.push(new Ball(ledHelper.green,3+x,3+y));
+        this.balls.push(new Ball(ledHelper.blue,4+x,4+y));
+        this.balls.push(new Ball(ledHelper.purple,5+x,5+y));
+        this.balls.push(new Ball(ledHelper.magenta,6+x,6+y));
     }
 
     wriggle() {
@@ -50,8 +56,22 @@ class Worm {
     }
 }
 
-// static singleton class
+// singleton helper class
 class ledHelper {
+
+    private static ledhelper: ledHelper;
+    
+    constructor(ledcount) {
+        ledHelper.led_count = ledcount;
+
+        if(!ledHelper.ledhelper) {
+            // intialise leds here?
+            // used by other classes and by main script file
+            hooloovoo.setup(ledHelper.led_count,32); // assign number of APA102 LEDs, assign SPI clock 
+            ledHelper.ledhelper = this;
+        }    
+        return ledHelper.ledhelper;
+    }
 
     static red = 'FF0000';
     static orange = 'FF7F00';
@@ -62,7 +82,11 @@ class ledHelper {
     static magenta = '8F00FF';
     static max_col:number;
     static max_row:number;
-    static hoolovoo: any;
+    static led_count:number;
+
+    clearPixels() {
+        hooloovoo.clear();
+    }
 
     // converts co-ords to a pixel number
     static getPixelNumber(x,y) {
@@ -101,4 +125,5 @@ class ledHelper {
 
 export { Ball };
 export { Worm };
+export { ledHelper };
 

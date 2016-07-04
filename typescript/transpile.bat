@@ -1,0 +1,1 @@
+tsc --out classy.js classy.ts ledley.js ledley.ts

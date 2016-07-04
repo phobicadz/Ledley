@@ -1,4 +1,6 @@
 "use strict";
+///<reference path="node.d.ts" />
+var hooloovoo = require("hooloovoo");
 var Ball = (function () {
     function Ball(colour, x, y) {
         this.x = x;
@@ -31,21 +33,22 @@ var Ball = (function () {
         else {
             this.y++;
         }
-        if (this.debug)
-            console.log(this.x + " " + this.y);
+        // console.log(this.x + " " + this.y);
+        hooloovoo.set_pixel_hex(ledHelper.getPixelNumber(this.x, this.y), this.colour);
     };
     return Ball;
 }());
 exports.Ball = Ball;
 var Worm = (function () {
     function Worm(x, y) {
+        this.balls = [];
         this.balls.push(new Ball(ledHelper.red, 0 + x, 0 + y));
-        this.balls.push(new Ball(ledHelper, 1 + x, 1 + y));
-        this.balls.push(new Ball(ledHelper, 2 + x, 2 + y));
-        this.balls.push(new Ball(ledHelper, 3 + x, 3 + y));
-        this.balls.push(new Ball(ledHelper, 4 + x, 4 + y));
-        this.balls.push(new Ball(ledHelper, 5 + x, 5 + y));
-        this.balls.push(new Ball(ledHelper, 6 + x, 6 + y));
+        this.balls.push(new Ball(ledHelper.orange, 1 + x, 1 + y));
+        this.balls.push(new Ball(ledHelper.yellow, 2 + x, 2 + y));
+        this.balls.push(new Ball(ledHelper.green, 3 + x, 3 + y));
+        this.balls.push(new Ball(ledHelper.blue, 4 + x, 4 + y));
+        this.balls.push(new Ball(ledHelper.purple, 5 + x, 5 + y));
+        this.balls.push(new Ball(ledHelper.magenta, 6 + x, 6 + y));
     }
     Worm.prototype.wriggle = function () {
         this.balls.forEach(function (element) {
@@ -55,10 +58,21 @@ var Worm = (function () {
     return Worm;
 }());
 exports.Worm = Worm;
-// static singleton class
+// singleton helper class
 var ledHelper = (function () {
-    function ledHelper() {
+    function ledHelper(ledcount) {
+        ledHelper.led_count = ledcount;
+        if (!ledHelper.ledhelper) {
+            // intialise leds here?
+            // used by other classes and by main script file
+            hooloovoo.setup(ledHelper.led_count, 32); // assign number of APA102 LEDs, assign SPI clock 
+            ledHelper.ledhelper = this;
+        }
+        return ledHelper.ledhelper;
     }
+    ledHelper.prototype.clearPixels = function () {
+        hooloovoo.clear();
+    };
     // converts co-ords to a pixel number
     ledHelper.getPixelNumber = function (x, y) {
         if (y % 2 == 0) {
@@ -104,3 +118,4 @@ var ledHelper = (function () {
     ledHelper.magenta = '8F00FF';
     return ledHelper;
 }());
+exports.ledHelper = ledHelper;
