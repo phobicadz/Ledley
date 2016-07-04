@@ -1,0 +1,23 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "emeraldwalk.runonsave": {
+        "autoClearConsole": true,
+        "commands": [
+            {
+                 "match": ".ts",
+                 "isAsync": false,
+                 "cmd" : "tsc ${file}"
+            },
+            {
+                "match": ".ts",
+                "isAsync": false,
+                "cmd": "psftp pi@adamandlindsey.co.uk -P 24 -pw raspberry -batch -b ${fileDirname}\\filestoupload.txt"
+            },
+            {
+                "match": ".ts",
+                "isAsync": false,
+                "cmd": "plink -ssh -P 24 pi@adamandlindsey.co.uk -pw raspberry -m ${fileDirname}\\commands.txt"
+            }   
+        ]
+    }
+}

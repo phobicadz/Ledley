@@ -1,7 +1,7 @@
 ///<reference path="node.d.ts" />
 var hooloovoo = require("hooloovoo");
-
-class Ball {
+// test
+class Ball {  
     xbound: number;
     ybound: number;
     colour: string;
@@ -123,7 +123,6 @@ class ledHelper {
     }
 }
 
-export { Ball };
-export { Worm };
-export { ledHelper };
+export { Ball, Worm, ledHelper};
+
 
