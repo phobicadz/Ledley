@@ -22,6 +22,7 @@ timer = setInterval(function() {
 },10);
 
 // after x Seconds kill the loop
+
 setTimeout(function () {
   clearInterval(timer);
   hooloovoo.clear();

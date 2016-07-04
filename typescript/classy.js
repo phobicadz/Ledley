@@ -1,7 +1,6 @@
 "use strict";
 ///<reference path="node.d.ts" />
 var hooloovoo = require("hooloovoo");
-// test
 var Ball = (function () {
     function Ball(colour, x, y) {
         this.x = x;
@@ -36,6 +35,7 @@ var Ball = (function () {
         }
         // console.log(this.x + " " + this.y);
         hooloovoo.set_pixel_hex(ledHelper.getPixelNumber(this.x, this.y), this.colour);
+        //console.log("bounce this");
     };
     return Ball;
 }());

@@ -1,6 +1,5 @@
 ///<reference path="node.d.ts" />
 var hooloovoo = require("hooloovoo");
-// test
 class Ball {  
     xbound: number;
     ybound: number;
@@ -31,6 +30,7 @@ class Ball {
         // console.log(this.x + " " + this.y);
 
         hooloovoo.set_pixel_hex(ledHelper.getPixelNumber(this.x,this.y),this.colour);
+        //console.log("bounce this");
     }  
 }
 

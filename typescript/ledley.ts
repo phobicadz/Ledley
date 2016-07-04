@@ -8,6 +8,7 @@ var worm2 = new leds.Worm(3,0);
 var worm3 = new leds.Worm(5,3);
 var worm4 = new leds.Worm(1,3);
 
+
 console.log("Running Ledley....");
 
 timer = setInterval(function() {
@@ -17,8 +18,7 @@ timer = setInterval(function() {
   worm2.wriggle();
   worm3.wriggle();
   worm4.wriggle();
-  console.log("Wriggle");
-},10);
+},20);
 
 // after x Seconds kill the loop
 setTimeout(function () {

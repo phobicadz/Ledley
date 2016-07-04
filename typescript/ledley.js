@@ -15,8 +15,7 @@ timer = setInterval(function () {
     worm2.wriggle();
     worm3.wriggle();
     worm4.wriggle();
-    console.log("Wriggle");
-}, 10);
+}, 20);
 // after x Seconds kill the loop
 setTimeout(function () {
     clearInterval(timer);
