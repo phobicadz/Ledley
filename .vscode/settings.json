@@ -19,5 +19,12 @@
                 "cmd": "plink -ssh -P 24 pi@adamandlindsey.co.uk -pw raspberry -m ${fileDirname}\\commands.txt"
             }   
         ]
-    }
+    },
+   "files.exclude": {
+       "**/.git": true,
+       "**/.svn": true,
+       "**/.DS_Store": true,
+       "typescript/*.js": true,
+       "node_modules/":true
+   }
 }

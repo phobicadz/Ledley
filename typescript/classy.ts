@@ -1,5 +1,6 @@
 ///<reference path="node.d.ts" />
 var hooloovoo = require("hooloovoo");
+
 class Ball {  
     xbound: number;
     ybound: number;
@@ -10,7 +11,7 @@ class Ball {
     xdirection:boolean;
     ydirection:boolean;
 
-    constructor(colour,x,y){
+    constructor(colour: string,x: number,y: number){
         this.x=x;
         this.y=y;
         this.xdirection=true;
@@ -84,7 +85,7 @@ class ledHelper {
     static max_row:number;
     static led_count:number;
 
-    clearPixels() {
+    static clearPixels() {
         hooloovoo.clear();
     }
 
@@ -123,6 +124,6 @@ class ledHelper {
     }
 }
 
-export { Ball, Worm, ledHelper};
+export { Ball, Worm, ledHelper };
 
 

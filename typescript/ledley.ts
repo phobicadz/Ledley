@@ -1,19 +1,17 @@
-///<reference path="classy.ts" />
 ///<reference path="node.d.ts" />
-var leds = require("./classy.js");
+import { ledHelper, Worm } from "./classy";
+let helper = new ledHelper(120); // initialise the static class with correct led number
+var worm = new Worm(0,0);
+var worm2 = new Worm(3,0);
+var worm3 = new Worm(5,3);
+var worm4 = new Worm(1,3);
 var timer;
-var helper = new leds.ledHelper(120);
-var worm = new leds.Worm(0,0);
-var worm2 = new leds.Worm(3,0);
-var worm3 = new leds.Worm(5,3);
-var worm4 = new leds.Worm(1,3);
-
 
 console.log("Running Ledley....");
 
 timer = setInterval(function() {
   // main animation loop
-  helper.clearPixels();
+  ledHelper.clearPixels();
   worm.wriggle();
   worm2.wriggle();
   worm3.wriggle();
@@ -23,7 +21,8 @@ timer = setInterval(function() {
 // after x Seconds kill the loop
 setTimeout(function () {
   clearInterval(timer);
-  helper.clearPixels();
+  ledHelper.rainbow();
+
   console.log("Finished Ledley....");
 }, 12000);
 
@@ -31,6 +30,6 @@ setTimeout(function () {
 process.on('SIGINT', function () {
   console.log("\nGracefully shutting down from (Ctrl-C)");
   // some other closing procedures go here
-  helper.clearPixels();
+  ledHelper.clearPixels();
   process.exit();
 })

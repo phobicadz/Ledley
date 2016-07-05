@@ -71,7 +71,7 @@ var ledHelper = (function () {
         }
         return ledHelper.ledhelper;
     }
-    ledHelper.prototype.clearPixels = function () {
+    ledHelper.clearPixels = function () {
         hooloovoo.clear();
     };
     // converts co-ords to a pixel number
