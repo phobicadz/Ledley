@@ -37,6 +37,7 @@ var Ball = (function () {
     };
     Ball.prototype.gravityBounce = function () {
         // bounce ball across the screen with decreasing amplitude
+        // find formulae on internet
     };
     return Ball;
 })();
@@ -60,7 +61,12 @@ var Worm = (function () {
     return Worm;
 })();
 exports.Worm = Worm;
-// singleton static helper class
+var Vector = (function () {
+    function Vector() {
+    }
+    return Vector;
+})();
+// singleton static helper/wrapper class
 var ledHelper = (function () {
     function ledHelper(ledcount, maxcol, maxrow) {
         ledHelper.led_count = ledcount;
@@ -68,8 +74,6 @@ var ledHelper = (function () {
         ledHelper.max_col = maxcol;
         ledHelper.max_row = maxrow;
         if (!ledHelper.ledhelper) {
-            // intialise leds here?
-            // used by other classes and by main script file
             ledHelper.leds.setup(ledHelper.led_count, 32); // assign number of APA102 LEDs, assign SPI clock 
             ledHelper.ledhelper = this;
         }

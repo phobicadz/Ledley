@@ -34,6 +34,7 @@ class Ball {
 
     gravityBounce () {
         // bounce ball across the screen with decreasing amplitude
+        // find formulae on internet
     }  
 }
 
@@ -58,20 +59,22 @@ class Worm {
     }
 }
 
-// singleton static helper class
+class Vector {
+
+}
+
+// singleton static helper/wrapper class
 class ledHelper {
     private static ledhelper: ledHelper;
     static leds:any;
     
-    constructor(ledcount: number,maxcol:number,maxrow:number) {
+    constructor(ledcount:number,maxcol:number,maxrow:number) {
         ledHelper.led_count = ledcount;
         ledHelper.leds = require("hooloovoo");
         ledHelper.max_col = maxcol;
         ledHelper.max_row = maxrow;
 
         if(!ledHelper.ledhelper) {
-            // intialise leds here?
-            // used by other classes and by main script file
             ledHelper.leds.setup(ledHelper.led_count,32); // assign number of APA102 LEDs, assign SPI clock 
             ledHelper.ledhelper = this;
         }    
