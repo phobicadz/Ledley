@@ -26,5 +26,23 @@
        "**/.DS_Store": true,
        "typescript/*.js": true,
        "node_modules/":true
-   }
+   },
+   "launcher.commands": [
+       {
+           "description": "Run Ledley",
+           "executable": "cmd.exe",
+           "parameters": "/Claunch.bat",
+           "output": true,
+           "startIn": "%item_path%"
+
+       },
+       {    
+           "description": "Transpile Current File",
+           "executable": "tsc",
+           "parameters": "%item%",
+           "ouput": true,
+           "startIn": "%item_path%"
+       }
+       
+   ]
 }

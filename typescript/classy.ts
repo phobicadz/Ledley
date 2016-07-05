@@ -1,5 +1,4 @@
 ///<reference path="node.d.ts" />
-
 class Ball {  
     xbound: number;
     ybound: number;
@@ -31,11 +30,14 @@ class Ball {
         if (this.ydirection == false) { this.y-- } else { this.y++ }  
     
         ledHelper.leds.set_pixel_hex(ledHelper.getPixelNumber(this.x,this.y),this.colour);
+    }
+
+    gravityBounce () {
+        // bounce ball across the screen with decreasing amplitude
     }  
 }
 
 class Worm {
-
     balls: Ball[];
 
     constructor(x,y){
@@ -115,19 +117,20 @@ class ledHelper {
         this.linex(10,this.green);this.linex(11,this.blue);
     }  
 
-	static liney(y,color) {
+	static liney(y:number,color:string) {
         let x = 0; // true block scoping you scoper
         for(x=0;x<this.max_col;x++) {
             ledHelper.leds.set_pixel_hex(this.getPixelNumber(x,y),color);
         }
     } 
 
-    static linex(x,color) {
+    static linex(x:number,color:string) {
         let y = 0;
         for(y=0;y<this.max_row;y++) {
             ledHelper.leds.set_pixel_hex(this.getPixelNumber(x,y),color);
         }
     }
+   
 }
 
 export { Ball, Worm, ledHelper };

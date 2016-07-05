@@ -35,6 +35,9 @@ var Ball = (function () {
         }
         ledHelper.leds.set_pixel_hex(ledHelper.getPixelNumber(this.x, this.y), this.colour);
     };
+    Ball.prototype.gravityBounce = function () {
+        // bounce ball across the screen with decreasing amplitude
+    };
     return Ball;
 })();
 exports.Ball = Ball;
