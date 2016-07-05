@@ -1,7 +1,6 @@
-"use strict";
 ///<reference path="node.d.ts" />
 var classy_1 = require("./classy");
-var helper = new classy_1.ledHelper(120); // initialise the static class with correct led number
+var helper = new classy_1.ledHelper(120, 12, 10); // initialise the static class with correct led number
 var worm = new classy_1.Worm(0, 0);
 var worm2 = new classy_1.Worm(3, 0);
 var worm3 = new classy_1.Worm(5, 3);
@@ -15,7 +14,7 @@ timer = setInterval(function () {
     worm2.wriggle();
     worm3.wriggle();
     worm4.wriggle();
-}, 20);
+}, 16);
 // after x Seconds kill the loop
 setTimeout(function () {
     clearInterval(timer);

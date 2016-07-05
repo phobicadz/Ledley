@@ -1,10 +1,10 @@
-"use strict";
 ///<reference path="node.d.ts" />
-var hooloovoo = require("hooloovoo");
 var Ball = (function () {
     function Ball(colour, x, y) {
         this.x = x;
         this.y = y;
+        this.xbound = ledHelper.max_col - 1;
+        this.ybound = ledHelper.max_row - 1;
         this.xdirection = true;
         this.ydirection = true;
         this.colour = colour;
@@ -33,12 +33,10 @@ var Ball = (function () {
         else {
             this.y++;
         }
-        // console.log(this.x + " " + this.y);
-        hooloovoo.set_pixel_hex(ledHelper.getPixelNumber(this.x, this.y), this.colour);
-        //console.log("bounce this");
+        ledHelper.leds.set_pixel_hex(ledHelper.getPixelNumber(this.x, this.y), this.colour);
     };
     return Ball;
-}());
+})();
 exports.Ball = Ball;
 var Worm = (function () {
     function Worm(x, y) {
@@ -57,34 +55,40 @@ var Worm = (function () {
         }, this);
     };
     return Worm;
-}());
+})();
 exports.Worm = Worm;
-// singleton helper class
+// singleton static helper class
 var ledHelper = (function () {
-    function ledHelper(ledcount) {
+    function ledHelper(ledcount, maxcol, maxrow) {
         ledHelper.led_count = ledcount;
+        ledHelper.leds = require("hooloovoo");
+        ledHelper.max_col = maxcol;
+        ledHelper.max_row = maxrow;
         if (!ledHelper.ledhelper) {
             // intialise leds here?
             // used by other classes and by main script file
-            hooloovoo.setup(ledHelper.led_count, 32); // assign number of APA102 LEDs, assign SPI clock 
+            ledHelper.leds.setup(ledHelper.led_count, 32); // assign number of APA102 LEDs, assign SPI clock 
             ledHelper.ledhelper = this;
         }
         return ledHelper.ledhelper;
     }
+    ledHelper.setPixel = function (lednumber) {
+        ledHelper.leds.set_pixel_hex(lednumber, 'FFFFFF');
+    };
     ledHelper.clearPixels = function () {
-        hooloovoo.clear();
+        ledHelper.leds.clear();
     };
     // converts co-ords to a pixel number
     ledHelper.getPixelNumber = function (x, y) {
         if (y % 2 == 0) {
-            return (y * this.max_col) + x;
+            return (y * ledHelper.max_col) + x;
         }
         else {
-            return ((y + 1) * this.max_col) - (x + 1);
+            return ((y + 1) * ledHelper.max_col) - (x + 1);
         }
     };
     ledHelper.rainbow = function () {
-        hooloovoo.clear();
+        ledHelper.leds.clear();
         this.linex(0, this.red);
         this.linex(1, this.orange);
         this.linex(2, this.yellow);
@@ -101,13 +105,13 @@ var ledHelper = (function () {
     ledHelper.liney = function (y, color) {
         var x = 0; // true block scoping you scoper
         for (x = 0; x < this.max_col; x++) {
-            hooloovoo.set_pixel_hex(this.getPixelNumber(x, y), color);
+            ledHelper.leds.set_pixel_hex(this.getPixelNumber(x, y), color);
         }
     };
     ledHelper.linex = function (x, color) {
         var y = 0;
         for (y = 0; y < this.max_row; y++) {
-            hooloovoo.set_pixel_hex(this.getPixelNumber(x, y), color);
+            ledHelper.leds.set_pixel_hex(this.getPixelNumber(x, y), color);
         }
     };
     ledHelper.red = 'FF0000';
@@ -118,5 +122,5 @@ var ledHelper = (function () {
     ledHelper.purple = '4B0082';
     ledHelper.magenta = '8F00FF';
     return ledHelper;
-}());
+})();
 exports.ledHelper = ledHelper;

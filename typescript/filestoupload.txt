@@ -1,3 +1,3 @@
 cd Documents/Node
-put c:\Users\adam.chamberlain\Documents\Ledley\typescript\ledley.js
-put c:\Users\adam.chamberlain\Documents\Ledley\typescript\classy.js
+put c:\Users\chamb\Documents\Ledley\typescript\ledley.js
+put c:\Users\chamb\Documents\Ledley\typescript\classy.js

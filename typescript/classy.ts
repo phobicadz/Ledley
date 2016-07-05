@@ -1,5 +1,4 @@
 ///<reference path="node.d.ts" />
-var hooloovoo = require("hooloovoo");
 
 class Ball {  
     xbound: number;
@@ -14,6 +13,8 @@ class Ball {
     constructor(colour: string,x: number,y: number){
         this.x=x;
         this.y=y;
+        this.xbound = ledHelper.max_col-1;
+        this.ybound = ledHelper.max_row-1;
         this.xdirection=true;
         this.ydirection=true;
         this.colour = colour;
@@ -28,10 +29,8 @@ class Ball {
         if (this.y==0) this.ydirection=true;
         if (this.xdirection == false) { this.x-- } else { this.x++ }
         if (this.ydirection == false) { this.y-- } else { this.y++ }  
-        // console.log(this.x + " " + this.y);
-
-        hooloovoo.set_pixel_hex(ledHelper.getPixelNumber(this.x,this.y),this.colour);
-        //console.log("bounce this");
+    
+        ledHelper.leds.set_pixel_hex(ledHelper.getPixelNumber(this.x,this.y),this.colour);
     }  
 }
 
@@ -57,18 +56,21 @@ class Worm {
     }
 }
 
-// singleton helper class
+// singleton static helper class
 class ledHelper {
-
     private static ledhelper: ledHelper;
+    static leds:any;
     
-    constructor(ledcount) {
+    constructor(ledcount: number,maxcol:number,maxrow:number) {
         ledHelper.led_count = ledcount;
+        ledHelper.leds = require("hooloovoo");
+        ledHelper.max_col = maxcol;
+        ledHelper.max_row = maxrow;
 
         if(!ledHelper.ledhelper) {
             // intialise leds here?
             // used by other classes and by main script file
-            hooloovoo.setup(ledHelper.led_count,32); // assign number of APA102 LEDs, assign SPI clock 
+            ledHelper.leds.setup(ledHelper.led_count,32); // assign number of APA102 LEDs, assign SPI clock 
             ledHelper.ledhelper = this;
         }    
         return ledHelper.ledhelper;
@@ -85,22 +87,26 @@ class ledHelper {
     static max_row:number;
     static led_count:number;
 
+    static setPixel(lednumber: number) {
+        ledHelper.leds.set_pixel_hex(lednumber,'FFFFFF');
+    }
+
     static clearPixels() {
-        hooloovoo.clear();
+        ledHelper.leds.clear();
     }
 
     // converts co-ords to a pixel number
     static getPixelNumber(x,y) {
         if(y%2==0) { // even row
-            return (y*this.max_col)+x;        
+            return (y*ledHelper.max_col)+x;        
         }
         else { 
-            return ((y+1)*this.max_col)-(x+1);
-        }
+            return ((y+1)*ledHelper.max_col)-(x+1);
+        }   
     }
 
     static rainbow() {
-        hooloovoo.clear();
+        ledHelper.leds.clear();
         this.linex(0,this.red);this.linex(1,this.orange);
         this.linex(2,this.yellow);this.linex(3,this.green);
         this.linex(4,this.blue);this.linex(5,this.purple);
@@ -112,14 +118,14 @@ class ledHelper {
 	static liney(y,color) {
         let x = 0; // true block scoping you scoper
         for(x=0;x<this.max_col;x++) {
-            hooloovoo.set_pixel_hex(this.getPixelNumber(x,y),color);
+            ledHelper.leds.set_pixel_hex(this.getPixelNumber(x,y),color);
         }
     } 
 
     static linex(x,color) {
         let y = 0;
         for(y=0;y<this.max_row;y++) {
-            hooloovoo.set_pixel_hex(this.getPixelNumber(x,y),color);
+            ledHelper.leds.set_pixel_hex(this.getPixelNumber(x,y),color);
         }
     }
 }
