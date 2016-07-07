@@ -8,6 +8,8 @@ class Ball {
     y: number;
     xdirection:boolean;
     ydirection:boolean;
+    velocity:Vector = new Vector(0.1,-0.4);
+    position:Point;
 
     constructor(colour: string,x: number,y: number){
         this.x=x;
@@ -17,6 +19,7 @@ class Ball {
         this.xdirection=true;
         this.ydirection=true;
         this.colour = colour;
+        this.position = new Point(x,y);
     };
 
     bounce() {
@@ -33,8 +36,32 @@ class Ball {
     }
 
     gravityBounce () {
-        // bounce ball across the screen with decreasing amplitude
-        // find formulae on internet
+       
+       this.velocity = this.velocity.add(ledHelper.GRAVITY.scale(0.1));
+
+       // collision detection against world
+			if (this.position.y > ledHelper.max_row-1) {
+				this.velocity.x2 = -this.velocity.x2 * ledHelper.FRICTION;
+				this.position.y = ledHelper.max_row-1;
+			} else if (this.position.y < ledHelper.min_row) {
+				this.velocity.x2 = -this.velocity.x2 * ledHelper.FRICTION;
+				this.position.y = ledHelper.min_row;
+			}
+			if (this.position.x < ledHelper.min_col) {
+				this.velocity.x1 = -this.velocity.x1 * ledHelper.FRICTION;
+				this.position.x = ledHelper.min_col;
+			} else {
+				if (this.position.x > ledHelper.max_col-1) {
+					this.velocity.x1 = -this.velocity.x1 * ledHelper.FRICTION;
+					this.position.x = ledHelper.max_col-1;
+				}
+			}
+			// update position
+			this.position.x += this.velocity.x1;
+			this.position.y += this.velocity.x2;
+
+            console.log(Math.round(this.position.x),Math.round(this.position.y));
+            ledHelper.leds.set_pixel_hex(ledHelper.getPixelNumber(Math.round(this.position.x),Math.round(this.position.y)),this.colour);
     }  
 }
 
@@ -60,7 +87,41 @@ class Worm {
 }
 
 class Vector {
+    x1:number;
+    x2:number;
 
+    constructor(x1:number,x2:number) {
+        this.x1 = x1;
+        this.x2 = x2;
+    }
+    add(other:Vector) {
+        return new Vector(this.x1 + other.x1,this.x2 + other.x2);
+    }
+    scale(by:number) {
+        return new Vector(this.x1 * by,this.x2 * by);
+    }
+    normalize() {
+        function norm(value) {
+            return value > 0 ? 1 : value < 0 ? -1 : 0;
+        }
+        return new Vector(norm(this.x1),norm(this.x2));
+    }
+}
+
+class Point {
+    x:number;
+    y:number;
+
+    constructor(x:number,y:number) {
+        this.x = x;
+        this.y = y;
+    }
+    relative(to:Point) {
+        return new Vector(to.x - this.x,to.y -this.y);
+    }
+    distance(to:Point) {
+        return Math.sqrt(Math.pow(this.x - to.x,2) + Math.pow(this.y -to.y,2));
+    }
 }
 
 // singleton static helper/wrapper class
@@ -90,7 +151,11 @@ class ledHelper {
     static magenta = '8F00FF';
     static max_col:number;
     static max_row:number;
+    static min_col:number = 0;
+    static min_row:number = 0;
     static led_count:number;
+    static GRAVITY = new Vector(0,9.81);
+    static FRICTION = 0.85;
 
     static setPixel(lednumber: number) {
         ledHelper.leds.set_pixel_hex(lednumber,'FFFFFF');

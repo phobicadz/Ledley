@@ -1,22 +1,26 @@
 ///<reference path="node.d.ts" />
-import { ledHelper, Worm } from "./classy";
+import { ledHelper, Worm, Ball } from "./classy";
 let helper = new ledHelper(120,12,10); // initialise the static class with correct led number
 var worm = new Worm(0,0);
 var worm2 = new Worm(3,0);
 var worm3 = new Worm(5,3);
 var worm4 = new Worm(1,3);
 var timer;
+var barry = new Ball('FFFFFF',0,0)
 
 console.log("Running Ledley....");
 
 timer = setInterval(function() {
   // main animation loop
   ledHelper.clearPixels();
-  worm.wriggle();
+ // worm.wriggle();
  // worm2.wriggle();
  // worm3.wriggle();
- worm4.wriggle();
-},16);
+// worm4.wriggle();
+  barry.gravityBounce();
+
+
+},50);
 
 // after x Seconds kill the loop
 setTimeout(function () {

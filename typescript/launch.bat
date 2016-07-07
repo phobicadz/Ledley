@@ -1,2 +1,3 @@
+echo off
 echo Running node script.......
 plink -ssh -P 24 pi@adamandlindsey.co.uk -pw raspberry -m commands.txt

@@ -6,15 +6,17 @@ var worm2 = new classy_1.Worm(3, 0);
 var worm3 = new classy_1.Worm(5, 3);
 var worm4 = new classy_1.Worm(1, 3);
 var timer;
+var barry = new classy_1.Ball('FFFFFF', 0, 0);
 console.log("Running Ledley....");
 timer = setInterval(function () {
     // main animation loop
     classy_1.ledHelper.clearPixels();
-    worm.wriggle();
+    // worm.wriggle();
     // worm2.wriggle();
     // worm3.wriggle();
-    worm4.wriggle();
-}, 16);
+    // worm4.wriggle();
+    barry.gravityBounce();
+}, 50);
 // after x Seconds kill the loop
 setTimeout(function () {
     clearInterval(timer);

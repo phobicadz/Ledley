@@ -1,6 +1,7 @@
 ///<reference path="node.d.ts" />
 var Ball = (function () {
     function Ball(colour, x, y) {
+        this.velocity = new Vector(0.1, -0.4);
         this.x = x;
         this.y = y;
         this.xbound = ledHelper.max_col - 1;
@@ -8,6 +9,7 @@ var Ball = (function () {
         this.xdirection = true;
         this.ydirection = true;
         this.colour = colour;
+        this.position = new Point(x, y);
     }
     ;
     Ball.prototype.bounce = function () {
@@ -36,8 +38,31 @@ var Ball = (function () {
         ledHelper.leds.set_pixel_hex(ledHelper.getPixelNumber(this.x, this.y), this.colour);
     };
     Ball.prototype.gravityBounce = function () {
-        // bounce ball across the screen with decreasing amplitude
-        // find formulae on internet
+        this.velocity = this.velocity.add(ledHelper.GRAVITY.scale(0.1));
+        // collision detection against world
+        if (this.position.y > ledHelper.max_row - 1) {
+            this.velocity.x2 = -this.velocity.x2 * ledHelper.FRICTION;
+            this.position.y = ledHelper.max_row - 1;
+        }
+        else if (this.position.y < ledHelper.min_row) {
+            this.velocity.x2 = -this.velocity.x2 * ledHelper.FRICTION;
+            this.position.y = ledHelper.min_row;
+        }
+        if (this.position.x < ledHelper.min_col) {
+            this.velocity.x1 = -this.velocity.x1 * ledHelper.FRICTION;
+            this.position.x = ledHelper.min_col;
+        }
+        else {
+            if (this.position.x > ledHelper.max_col - 1) {
+                this.velocity.x1 = -this.velocity.x1 * ledHelper.FRICTION;
+                this.position.x = ledHelper.max_col - 1;
+            }
+        }
+        // update position
+        this.position.x += this.velocity.x1;
+        this.position.y += this.velocity.x2;
+        console.log(Math.round(this.position.x), Math.round(this.position.y));
+        ledHelper.leds.set_pixel_hex(ledHelper.getPixelNumber(Math.round(this.position.x), Math.round(this.position.y)), this.colour);
     };
     return Ball;
 })();
@@ -62,9 +87,36 @@ var Worm = (function () {
 })();
 exports.Worm = Worm;
 var Vector = (function () {
-    function Vector() {
+    function Vector(x1, x2) {
+        this.x1 = x1;
+        this.x2 = x2;
     }
+    Vector.prototype.add = function (other) {
+        return new Vector(this.x1 + other.x1, this.x2 + other.x2);
+    };
+    Vector.prototype.scale = function (by) {
+        return new Vector(this.x1 * by, this.x2 * by);
+    };
+    Vector.prototype.normalize = function () {
+        function norm(value) {
+            return value > 0 ? 1 : value < 0 ? -1 : 0;
+        }
+        return new Vector(norm(this.x1), norm(this.x2));
+    };
     return Vector;
+})();
+var Point = (function () {
+    function Point(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    Point.prototype.relative = function (to) {
+        return new Vector(to.x - this.x, to.y - this.y);
+    };
+    Point.prototype.distance = function (to) {
+        return Math.sqrt(Math.pow(this.x - to.x, 2) + Math.pow(this.y - to.y, 2));
+    };
+    return Point;
 })();
 // singleton static helper/wrapper class
 var ledHelper = (function () {
@@ -128,6 +180,10 @@ var ledHelper = (function () {
     ledHelper.blue = '0000FF';
     ledHelper.purple = '4B0082';
     ledHelper.magenta = '8F00FF';
+    ledHelper.min_col = 0;
+    ledHelper.min_row = 0;
+    ledHelper.GRAVITY = new Vector(0, 9.81);
+    ledHelper.FRICTION = 0.85;
     return ledHelper;
 })();
 exports.ledHelper = ledHelper;
